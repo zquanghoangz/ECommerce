@@ -17,11 +17,12 @@ namespace ECommerce.ProductCatalog
     /// </summary>
     internal sealed class ProductCatalog : StatefulService, IProductCatalogService
     {
-        IProductRepository _repository;
+        private IProductRepository _repository;
 
         public ProductCatalog(StatefulServiceContext context)
             : base(context)
-        { }
+        {
+        }
 
         public async Task AddProductAsync(Product product)
         {
@@ -42,9 +43,10 @@ namespace ECommerce.ProductCatalog
         /// <returns>A collection of listeners.</returns>
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
         {
-            return new[]{
-            new ServiceReplicaListener(context =>
-            new FabricTransportServiceRemotingListener(context, this))
+            return new[]
+            {
+                new ServiceReplicaListener(context =>
+                    new FabricTransportServiceRemotingListener(context, this))
             };
         }
 
@@ -55,31 +57,32 @@ namespace ECommerce.ProductCatalog
         /// <param name="cancellationToken">Canceled when Service Fabric needs to shut down this service replica.</param>
         protected override async Task RunAsync(CancellationToken cancellationToken)
         {
-            _repository = new ServiceFabricProductResponsitory(StateManager);
+            _repository = new ServiceFabricProductRepository(StateManager);
 
-            var products = new List<Product> {
+            var products = new List<Product>
+            {
                 new Product
                 {
                     Id = Guid.NewGuid(),
                     Name = "Surface book",
                     Description = "This is Microsoft's laptop",
-                    Availablity = 30,
+                    Availability = 30,
                 },
                 new Product
                 {
                     Id = Guid.NewGuid(),
                     Name = "MacBook Air",
                     Description = "This is Apple's laptop",
-                    Availablity = 15,
+                    Availability = 15,
                 },
                 new Product
                 {
                     Id = Guid.NewGuid(),
                     Name = "Dell XYZ",
                     Description = "This is Dell's laptop",
-                    Availablity = 10,
+                    Availability = 10,
                 },
-};
+            };
 
             foreach (var item in products)
             {

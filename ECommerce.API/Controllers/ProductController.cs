@@ -15,7 +15,8 @@ namespace ECommerce.API.Controllers
         public ProductController()
         {
             var proxyFactory = new ServiceProxyFactory(c => new FabricTransportServiceRemotingClientFactory());
-            _productCatalogService = proxyFactory.CreateServiceProxy<IProductCatalogService>(new Uri("fabric:/ECommerce/ProductCatalog"),
+            _productCatalogService = proxyFactory.CreateServiceProxy<IProductCatalogService>(
+                new Uri("fabric:/ECommerce/ProductCatalog"),
                 new Microsoft.ServiceFabric.Services.Client.ServicePartitionKey(0));
         }
 
@@ -30,7 +31,7 @@ namespace ECommerce.API.Controllers
                 Id = x.Id,
                 Name = x.Name,
                 Description = x.Description,
-                IsAvailable = x.Availablity > 0,
+                IsAvailable = x.Availability > 0,
             });
         }
 
@@ -43,7 +44,7 @@ namespace ECommerce.API.Controllers
                 Name = product.Name,
                 Description = product.Description,
                 Price = product.Price,
-                Availablity = 100
+                Availability = 100
             };
 
             await _productCatalogService.AddProductAsync(newPRoduct);
