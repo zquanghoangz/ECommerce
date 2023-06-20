@@ -50,4 +50,4 @@ namespace ECommerce.API.Controllers
             await _productCatalogService.AddProductAsync(newPRoduct);
         }
     }
-}
+    }
